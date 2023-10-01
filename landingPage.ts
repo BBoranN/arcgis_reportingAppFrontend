@@ -55,10 +55,7 @@ export async function changePage(user :User){
     view.on("click",function(event){
         if(edit){
             const clickedPoint = view.toMap(event);
-            view.openPopup({
-              location: 
-            })
-/*             var graphic = new Graphic({
+            var graphic = new Graphic({
                 geometry:{
                     type: "point",
                     latitude:clickedPoint.latitude,
@@ -77,7 +74,7 @@ export async function changePage(user :User){
                     content:[inputPop]
                 }
             });
-            graphicsLayer.add(graphic); */
+            graphicsLayer.add(graphic);
             edit=false;
         }
     })
