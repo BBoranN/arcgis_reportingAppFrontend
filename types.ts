@@ -3,10 +3,11 @@ export type User ={
     name?: string;
     password ?:string;
     token?:string;
+    role?: string; 
 }
 export type userReport ={
     ıd?: number; 
-    userId?: string;
+    userId?: number;
     reportTitle: string;
     reportDescription:string;
     x?:number;

@@ -1,0 +1,1 @@
+import CustomContent from "@arcgis/core/popup/content/CustomContent.js";

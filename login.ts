@@ -1,5 +1,5 @@
 import { apiConnection } from "./apiConnectionService";
-import { changePage} from "./landingPage";
+import { changePageAdmin, changePageUser} from "./landingPage";
 import { User } from "./types";
 
 
@@ -35,8 +35,8 @@ class Login extends HTMLDivElement{
         
         if(typeof(result)=="string")
             return ;
-        
-        changePage(result);
+        if(result.role==='roleVatandas')changePageUser(result);
+        else if(result.role ==='admin')changePageAdmin(result);
     }
 
 }customElements.define("log-in",Login,{extends:"div"});
