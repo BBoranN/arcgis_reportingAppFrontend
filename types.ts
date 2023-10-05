@@ -12,4 +12,5 @@ export type userReport ={
     reportDescription:string;
     x?:number;
     y?:number;
+    status?: string;
 }

@@ -119,15 +119,12 @@ export async function changePageAdmin(user :User){
       
     var graphicsLayer = new GraphicsLayer();  
     map.layers.add(graphicsLayer);  
-    graphicsLayer.addMany(graphics);
     
-    for (let i in graphics){
-        graphics[i].popupTemplate={
-            content: [{
-                type: 'custom',
-                custom: inputPop
-            }]
-        }
-    }
+    const popupTemplate = new PopupTemplate({
+        title: "Admin Popup",
+        content: "xd"
+    })
+
+    graphicsLayer.addMany(graphics);
 }
 
