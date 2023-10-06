@@ -1,5 +1,6 @@
 import { apiConnection } from "./apiConnectionService";
-import { changePageAdmin, changePageUser} from "./landingPage";
+import { changePageUser} from "./landingPage";
+import { changePageAdmin } from "./adminPage";
 import { User } from "./types";
 
 
@@ -43,4 +44,5 @@ class Login extends HTMLDivElement{
 
 var login = new Login();
 
+login.id="login";
 export {login};

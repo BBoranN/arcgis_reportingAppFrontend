@@ -6,10 +6,10 @@ export type User ={
     role?: string; 
 }
 export type userReport ={
-    ıd?: number; 
+    id?: number; 
     userId?: number;
-    reportTitle: string;
-    reportDescription:string;
+    reportTitle?: string;
+    reportDescription?:string;
     x?:number;
     y?:number;
     status?: string;

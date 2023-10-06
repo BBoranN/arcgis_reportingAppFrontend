@@ -51,13 +51,14 @@ class ApiConnectionService {
                         longitude: data[i].x,
                     },
                     attributes: {
-                        id: data[i].Id,
+                        id: data[i].id,
                         title: data[i].reportTitle,
                         details: data[i].reportDescription,
+                        status: data[i].status
                     },
                     symbol:{
                         type: "simple-marker",
-                        color:((data[i].status == "Pending") ? "red" : ((data[i].status =="Working On") ? "green" : "blue")),
+                        color:((data[i].status == "Pending") ? "red" : ((data[i].status =="Working On") ? "yellow" : (data[i].status =="Solved") ?  "green" :"blue")),
                         size:"30px"
                     },
                     popupTemplate:(user.role =='admin') ? {content:[inputPop]} :{
@@ -95,6 +96,25 @@ class ApiConnectionService {
         catch(exception){
             console.log(exception);
             console.log(JSON.stringify(report));
+        }
+    }
+
+    async changeReportStatus(report:userReport,token){
+        try{
+            const response = await fetch("https://localhost:7004/api/Reports/ChangeStatus",{
+                method: "POST",
+                body:JSON.stringify(report),
+                headers: {
+                    "content-type" : "application/json",
+                    "Authorization" :"Bearer "+token,
+                },
+            });
+            console.log(JSON.stringify(report));
+            let data = await response.json();
+            console.log(data);
+
+        }catch(exception){
+            console.log(exception);
         }
     }
 }

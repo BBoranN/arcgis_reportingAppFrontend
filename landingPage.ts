@@ -45,8 +45,6 @@ export async function changePageUser(user :User){
     temp.appendChild(button);
     view.ui.add(temp,"top-right");
 
-
-
     var edit=false;
 
     button.addEventListener("click",()=>{
@@ -57,6 +55,25 @@ export async function changePageUser(user :User){
 
     view.on("click",function(event){
         if(edit){
+            let xputPop= document.createElement("div");
+            let inputTitle= document.createElement("input");
+            let inputDetails = document.createElement("input");
+            let inputButton= document.createElement("button");
+
+            inputTitle.placeholder="Enter report title:";
+            inputDetails.placeholder="Enter report descriptiop";
+            inputButton.innerText="Submit";
+
+            xputPop.appendChild(inputTitle);
+            xputPop.appendChild(inputDetails);
+            xputPop.appendChild(inputButton);
+
+
+            let inputPop = new CustomContent({
+                creator: ( event) =>{
+                    return xputPop;
+                }
+            })
             const clickedPoint = view.toMap(event);
             var graphic = new Graphic({
                 geometry:{
@@ -77,7 +94,7 @@ export async function changePageUser(user :User){
                     content:[inputPop]
                 }
             });
-            inputButton.addEventListener("click",()=>{
+            inputButton.addEventListener("click",async ()=>{
                 graphic.attributes={title:(inputTitle.value),
                 details:(inputDetails.value)};
                 console.log(event.mapPoint.latitude,event.mapPoint.longitude);
@@ -101,31 +118,3 @@ export async function changePageUser(user :User){
     })
     
 }
-
-export async function changePageAdmin(user :User){
-    var graphics = await apiConnection.getPreviousReports(user);
-    console.log(user.role);
-    viewDiv!.removeChild(login);
-    esriConfig.apiKey = "AAPK52342f431d2440c7ae7bf9b7de0d0b86R9JtgalY2YgKIDa8rsG4uO6Z3HzLNLpUPoXFeSjk0VX5QNWh5DFZGx-hNGZRMLBH";
-    const map = new Map({
-        basemap: "arcgis-topographic" // Basemap layer service
-        });
-
-    const view = new MapView({
-            map: map,
-            center: [30, 40], // Longitude, latitude
-            zoom: 13, // Zoom level
-            container: "viewDiv" // Div element
-    });
-      
-    var graphicsLayer = new GraphicsLayer();  
-    map.layers.add(graphicsLayer);  
-    
-    const popupTemplate = new PopupTemplate({
-        title: "Admin Popup",
-        content: "xd"
-    })
-
-    graphicsLayer.addMany(graphics);
-}
-
