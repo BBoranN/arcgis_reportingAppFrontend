@@ -4,20 +4,15 @@ import CustomContent from "@arcgis/core/popup/content/CustomContent.js";
 let xputPop= document.createElement("div");
 let inputTitle= document.createElement("input");
 let inputDetails = document.createElement("input");
-let button= document.createElement("button");
+let inputButton= document.createElement("button");
 
 inputTitle.placeholder="Enter report title:";
 inputDetails.placeholder="Enter report descriptiop";
-button.innerText="Submit";
+inputButton.innerText="Submit";
 
 xputPop.appendChild(inputTitle);
 xputPop.appendChild(inputDetails);
-xputPop.appendChild(button);
-
-button.addEventListener("click",()=>{
-    console.log(inputTitle.value);
-    console.log(inputDetails.value);
-})
+xputPop.appendChild(inputButton);
 
 
 let inputPop = new CustomContent({
@@ -25,4 +20,4 @@ let inputPop = new CustomContent({
         return xputPop;
     }
 })
-export {inputPop,xputPop};
+export {inputPop,inputButton,inputTitle,inputDetails};

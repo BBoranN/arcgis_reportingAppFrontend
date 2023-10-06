@@ -2,19 +2,18 @@ import { login } from "./login";
 import MapView from "@arcgis/core/views/MapView.js";
 import esriConfig from "@arcgis/core/config.js";
 import Map from "@arcgis/core/Map.js";
-import { User } from "./types";
+import { User, userReport } from "./types";
 import { apiConnection } from "./apiConnectionService";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js"
 import Graphic from "@arcgis/core/Graphic.js";
 import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Popup from "@arcgis/core/widgets/Popup.js";
-import { inputPop, inputDetails, inputTitle,button} from "./inputPopupContent";
+import { inputPop, inputButton,inputDetails,inputTitle } from "./inputPopupContent";
 import Geometry from "@arcgis/core/geometry/Geometry";
+
 
 let viewDiv= document.getElementById("viewDiv");
 viewDiv!.appendChild(login);
-
-//document.body.appendChild(login);
 
 export async function changePage(user :User){
     
@@ -36,13 +35,15 @@ export async function changePage(user :User){
     var graphicsLayer = new GraphicsLayer();  
     map.layers.add(graphicsLayer);  
     graphicsLayer.addMany(graphics);
-
+    
 
     var temp = document.createElement("div");
     var button = document.createElement("button");
     button.innerHTML="Add report";
     temp.appendChild(button);
     view.ui.add(temp,"top-right");
+
+
 
     var edit=false;
 
@@ -55,7 +56,6 @@ export async function changePage(user :User){
     view.on("click",function(event){
         if(edit){
             const clickedPoint = view.toMap(event);
-            console.log(event)
             var graphic = new Graphic({
                 geometry:{
                     type: "point",
@@ -75,25 +75,27 @@ export async function changePage(user :User){
                     content:[inputPop]
                 }
             });
-            graphicsLayer.add(graphic);
-            button.addEventListener("click",f=>{
-                graphic.attributes ={
-                    title: inputTitle,
-                    details: inputDetails
-                }
-                graphic.popupTemplate= new PopupTemplate({
+            inputButton.addEventListener("click",()=>{
+                graphic.attributes={title:(inputTitle.value),
+                details:(inputDetails.value)};
+                console.log(event.mapPoint.latitude,event.mapPoint.longitude);
+                graphic.popupTemplate={
                     title:"{title}",
                     content:[{
                         type: "text",
                         text: "{details}"
                 }]
-                });
-                    
+                }
+                apiConnection.postUserReport({userId:user.id,
+                    reportTitle: graphic.attributes.title,reportDescription:graphic.attributes.details,
+                    x:clickedPoint.longitude, y:clickedPoint.latitude },user.token);
+                view.popup.visible=false;
             })
+            inputTitle.value = '';
+            inputDetails.value='';
+            graphicsLayer.add(graphic);
             edit=false;
         }
     })
     
 }
-
-

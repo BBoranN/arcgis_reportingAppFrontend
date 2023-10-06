@@ -1,12 +1,12 @@
 export type User ={
-    id?: string;
+    id?: undefined;
     name?: string;
     password ?:string;
     token?:string;
 }
-export type Report ={
-    Id?: number; 
-    ReporterId?: string;
+export type userReport ={
+    ıd?: number; 
+    userId?: string;
     reportTitle: string;
     reportDescription:string;
     x?:number;
