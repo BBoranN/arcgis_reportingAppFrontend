@@ -8,7 +8,7 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js"
 import Graphic from "@arcgis/core/Graphic.js";
 import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Popup from "@arcgis/core/widgets/Popup.js";
-import { inputPop, xputPop } from "./inputPopupContent";
+import { inputPop, inputDetails, inputTitle,button} from "./inputPopupContent";
 import Geometry from "@arcgis/core/geometry/Geometry";
 
 let viewDiv= document.getElementById("viewDiv");
@@ -55,6 +55,7 @@ export async function changePage(user :User){
     view.on("click",function(event){
         if(edit){
             const clickedPoint = view.toMap(event);
+            console.log(event)
             var graphic = new Graphic({
                 geometry:{
                     type: "point",
@@ -75,6 +76,20 @@ export async function changePage(user :User){
                 }
             });
             graphicsLayer.add(graphic);
+            button.addEventListener("click",f=>{
+                graphic.attributes ={
+                    title: inputTitle,
+                    details: inputDetails
+                }
+                graphic.popupTemplate= new PopupTemplate({
+                    title:"{title}",
+                    content:[{
+                        type: "text",
+                        text: "{details}"
+                }]
+                });
+                    
+            })
             edit=false;
         }
     })
