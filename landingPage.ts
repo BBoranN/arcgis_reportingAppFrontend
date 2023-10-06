@@ -10,15 +10,17 @@ import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Popup from "@arcgis/core/widgets/Popup.js";
 import { inputPop, inputButton,inputDetails,inputTitle } from "./inputPopupContent";
 import Geometry from "@arcgis/core/geometry/Geometry";
+import CustomContent from "@arcgis/core/popup/content/CustomContent";
+
 
 
 let viewDiv= document.getElementById("viewDiv");
 viewDiv!.appendChild(login);
 
-export async function changePage(user :User){
+export async function changePageUser(user :User){
     
     var graphics = await apiConnection.getPreviousReports(user);
-    
+    console.log(user.role);
     viewDiv!.removeChild(login);
     esriConfig.apiKey = "AAPK52342f431d2440c7ae7bf9b7de0d0b86R9JtgalY2YgKIDa8rsG4uO6Z3HzLNLpUPoXFeSjk0VX5QNWh5DFZGx-hNGZRMLBH";
     const map = new Map({
@@ -93,9 +95,37 @@ export async function changePage(user :User){
             })
             inputTitle.value = '';
             inputDetails.value='';
-            graphicsLayer.add(graphic);
+            graphicsLayer.add(graphic); 
             edit=false;
         }
     })
     
 }
+
+export async function changePageAdmin(user :User){
+    var graphics = await apiConnection.getPreviousReports(user);
+    console.log(user.role);
+    viewDiv!.removeChild(login);
+    esriConfig.apiKey = "AAPK52342f431d2440c7ae7bf9b7de0d0b86R9JtgalY2YgKIDa8rsG4uO6Z3HzLNLpUPoXFeSjk0VX5QNWh5DFZGx-hNGZRMLBH";
+    const map = new Map({
+        basemap: "arcgis-topographic" // Basemap layer service
+        });
+
+    const view = new MapView({
+            map: map,
+            center: [30, 40], // Longitude, latitude
+            zoom: 13, // Zoom level
+            container: "viewDiv" // Div element
+    });
+      
+    var graphicsLayer = new GraphicsLayer();  
+    map.layers.add(graphicsLayer);  
+    
+    const popupTemplate = new PopupTemplate({
+        title: "Admin Popup",
+        content: "xd"
+    })
+
+    graphicsLayer.addMany(graphics);
+}
+

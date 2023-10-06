@@ -1,6 +1,7 @@
 import { User, userReport } from "./types";
 import Graphic from "@arcgis/core/Graphic.js";
 import Geometry from "@arcgis/core/geometry/Geometry.js";
+import { inputPop } from "./inputPopupContent";
 class ApiConnectionService {
     constructor(){
 
@@ -18,7 +19,8 @@ class ApiConnectionService {
             const data = await response.json();
             let tempUser:User ={
                 id: data.id,
-                token: data.token
+                token: data.token,
+                role: data.role
             }
             console.log(data.id);
             console.log(data.token);
@@ -30,8 +32,8 @@ class ApiConnectionService {
     }
     async getPreviousReports(user: User) : Promise<Graphic[]>{
         try{
-            console.log("https://localhost:7004/api/Reports/"+user.id);
-            const response = await fetch("https://localhost:7004/api/Reports/"+user.id,{
+            console.log("https://localhost:7004/api/Reports");
+            const response = await fetch("https://localhost:7004/api/Reports",{
                 method : "GET",
                 headers: {
                     "content-type" : "application/json",
@@ -55,10 +57,10 @@ class ApiConnectionService {
                     },
                     symbol:{
                         type: "simple-marker",
-                        color: "red",
+                        color:((data[i].status == "Pending") ? "red" : ((data[i].status =="Working On") ? "green" : "blue")),
                         size:"30px"
                     },
-                    popupTemplate:{
+                    popupTemplate:(user.role =='admin') ? {content:[inputPop]} :{
                         title:"{title}",
                         content:[{
                             type: "text",
@@ -79,7 +81,7 @@ class ApiConnectionService {
 
     async postUserReport(report:userReport,token){
         try{
-            const response= await fetch("https://localhost:7004/api/Reports/",{
+            const response= await fetch("https://localhost:7004/api/Reports",{
                 method: "POST",
                 body:JSON.stringify(report),
                 headers: {
