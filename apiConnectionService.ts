@@ -3,6 +3,7 @@ import Graphic from "@arcgis/core/Graphic.js";
 import Geometry from "@arcgis/core/geometry/Geometry.js";
 import { inputPop } from "./inputPopupContent";
 class ApiConnectionService {
+    currentUserInfo: User;
     constructor(){
 
     }
