@@ -8,8 +8,12 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js"
 import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import CustomContent from "@arcgis/core/popup/content/CustomContent";
 import Graphic from "@arcgis/core/Graphic";
+import Color from "@arcgis/core/Color.js";
+import Expand from "@arcgis/core/widgets/Expand.js";
+import LayerList from "@arcgis/core/widgets/LayerList.js";
+import { sidebar } from "./sidebar";
 
-function createPopupContent(graphic : Graphic){
+function createPopupContent(graphic : Graphic,layer){
     let form = document.createElement("form");
     let text = document.createElement("p");
     text.innerHTML= "Description: "+graphic.attributes.details+ "\nStatus: " +graphic.attributes.status;
@@ -45,9 +49,8 @@ function createPopupContent(graphic : Graphic){
     form.appendChild(solved);
     form.appendChild(label3);
     form.appendChild(statusButton);
-
     
-
+    
 
     statusButton.addEventListener('click',async (e)=>{
         e.preventDefault();
@@ -66,21 +69,26 @@ function createPopupContent(graphic : Graphic){
             graphic.attributes.status= "Solved";
             await apiConnection.changeReportStatus({id:graphic.attributes.id,status:graphic.attributes.status});
         }
-        graphic.symbol= {
-            type: "simple-marker",
-            color:((graphic.attributes.status == "Pending") ? "red" : (graphic.attributes.status =="Working On") ? "yellow" : 
-            (graphic.attributes.status =="Solved") ?  "green" :"blue"),
-            size:"30px"
-        }
+        var colorx = new Color((graphic.attributes.status == "Pending") ? "red" : (graphic.attributes.status =="Working On") ? "yellow" : 
+        (graphic.attributes.status =="Solved") ?  "green" :"blue");
+        layer.remove(graphic);
+        graphic.symbol.color= colorx;
+        layer.add(graphic);
+        
     });
 
     return form;
 }
 
+function changeColor(graphic: Graphic){
+    var colorx = new Color((graphic.attributes.status == "Pending") ? "red" : (graphic.attributes.status =="Working On") ? "yellow" : 
+        (graphic.attributes.status =="Solved") ?  "green" :"blue");
+        graphic.symbol.color= colorx;
+}
 
 export async function changePageAdmin(user :User){
     let viewDiv= document.getElementById("viewDiv");
-    var graphics = await apiConnection.getPreviousReports(user);
+    var graphics = await apiConnection.getPreviousReports();
     console.log(user.role);
     
         viewDiv!.removeChild(login);
@@ -99,11 +107,13 @@ export async function changePageAdmin(user :User){
     var graphicsLayer = new GraphicsLayer();  
     map.layers.add(graphicsLayer);  
     
+    graphicsLayer.addMany(graphics);
+
     let formContent = new CustomContent({
         outFields: ["*"],
         creator: ( event) =>{
 
-            return createPopupContent(event!.graphic);
+            return createPopupContent(event!.graphic,graphicsLayer);
         }
     });
 
@@ -111,13 +121,17 @@ export async function changePageAdmin(user :User){
         title: '{title}',
         content:[formContent]
     });
-
+    
     for(let i=0; i< graphics.length;i++){
         
-        graphics[i].popupTemplate=template;
-
-        
+        graphics[i].popupTemplate=template;   
     }
-
-    graphicsLayer.addMany(graphics);
+    let layerListExpand = new Expand({
+        expandIcon: "layers",  // see https://developers.arcgis.com/calcite-design-system/icons/
+        // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
+        view: view,
+        content: new sidebar()
+    });
+    view.ui.add(layerListExpand, "top-left");
+    
 } 

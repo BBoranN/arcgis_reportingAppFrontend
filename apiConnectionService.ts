@@ -25,20 +25,21 @@ class ApiConnectionService {
             }
             console.log(data.id);
             console.log(data.token);
+            this.currentUserInfo=data;
             return tempUser;
         }catch(exception){
             console.log(exception);
             return "Not found";
         }
     }
-    async getPreviousReports(user: User) : Promise<Graphic[]>{
+    async getPreviousReports() : Promise<Graphic[]>{
         try{
             console.log("https://localhost:7004/api/Reports");
             const response = await fetch("https://localhost:7004/api/Reports",{
                 method : "GET",
                 headers: {
                     "content-type" : "application/json",
-                    "Authorization" :"Bearer "+user.token,
+                    "Authorization" :"Bearer "+this.currentUserInfo.token,
                 }
             });
             const data =await response.json() ;
@@ -62,7 +63,7 @@ class ApiConnectionService {
                         color:((data[i].status == "Pending") ? "red" : ((data[i].status =="Working On") ? "yellow" : (data[i].status =="Solved") ?  "green" :"blue")),
                         size:"30px"
                     },
-                    popupTemplate:(user.role =='admin') ? {content:[inputPop]} :{
+                    popupTemplate:(this.currentUserInfo.role =='admin') ? {content:[inputPop]} :{
                         title:"{title}",
                         content:[{
                             type: "text",
@@ -100,14 +101,14 @@ class ApiConnectionService {
         }
     }
 
-    async changeReportStatus(report:userReport,token){
+    async changeReportStatus(report:userReport){
         try{
             const response = await fetch("https://localhost:7004/api/Reports/ChangeStatus",{
                 method: "POST",
                 body:JSON.stringify(report),
                 headers: {
                     "content-type" : "application/json",
-                    "Authorization" :"Bearer "+token,
+                    "Authorization" :"Bearer "+this.currentUserInfo.token,
                 },
             });
             console.log(JSON.stringify(report));

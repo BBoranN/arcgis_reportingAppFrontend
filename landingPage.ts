@@ -19,7 +19,7 @@ viewDiv!.appendChild(login);
 
 export async function changePageUser(user :User){
     
-    var graphics = await apiConnection.getPreviousReports(user);
+    var graphics = await apiConnection.getPreviousReports();
     console.log(user.role);
     viewDiv!.removeChild(login);
     esriConfig.apiKey = "AAPK52342f431d2440c7ae7bf9b7de0d0b86R9JtgalY2YgKIDa8rsG4uO6Z3HzLNLpUPoXFeSjk0VX5QNWh5DFZGx-hNGZRMLBH";
