@@ -1,3 +1,32 @@
 #sidebar{
     background-color: white;
 }
+
+.pending{
+    height: 25px;
+    width: 25px;
+    background-color: #be0a0a;
+    border-radius: 50%;
+    display: inline-block;
+}
+.irrelevant{
+    height: 25px;
+    width: 25px;
+    background-color: #1c26bb;
+    border-radius: 50%;
+    display: inline-block;
+}
+.workingon{
+    height: 25px;
+    width: 25px;
+    background-color: #cdde15;
+    border-radius: 50%;
+    display: inline-block;
+}
+.solved{
+    height: 25px;
+    width: 25px;
+    background-color: #11b81d;
+    border-radius: 50%;
+    display: inline-block;
+}

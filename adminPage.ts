@@ -126,12 +126,12 @@ export async function changePageAdmin(user :User){
         
         graphics[i].popupTemplate=template;   
     }
-    let layerListExpand = new Expand({
+    /* let layerListExpand = new Expand({
         expandIcon: "layers",  // see https://developers.arcgis.com/calcite-design-system/icons/
         // expandTooltip: "Expand LayerList", // optional, defaults to "Expand" for English locale
         view: view,
         content: new sidebar()
-    });
-    view.ui.add(layerListExpand, "top-left");
+    }); */
+    view.ui.add(new sidebar(), "bottom-left");
     
 } 
