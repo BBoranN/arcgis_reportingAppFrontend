@@ -1,23 +1,30 @@
 
-import CustomContent from "@arcgis/core/popup/content/CustomContent.js";
-
-let xputPop= document.createElement("div");
-let inputTitle= document.createElement("input");
-let inputDetails = document.createElement("input");
-let inputButton= document.createElement("button");
-
-inputTitle.placeholder="Enter report title:";
-inputDetails.placeholder="Enter report descriptiop";
-inputButton.innerText="Submit";
-
-xputPop.appendChild(inputTitle);
-xputPop.appendChild(inputDetails);
-xputPop.appendChild(inputButton);
+import Graphic from "@arcgis/core/Graphic";
 
 
-let inputPop = new CustomContent({
-    creator: ( event) =>{
-        return xputPop;
+export class inputPop extends HTMLDivElement{
+    inputButton: HTMLButtonElement;
+    inputTitle: HTMLInputElement;
+    inputDetails: HTMLInputElement;
+    constructor(){
+        super();
+
+
+        this.inputTitle= document.createElement("input");
+        this.inputTitle.id="inputtitle";
+        this.inputDetails = document.createElement("input");
+        this.inputDetails.id="inputdetails";
+        this.inputButton= document.createElement("button");
+        this.inputButton.id="inputbutton";
+
+        this.inputTitle.placeholder="Enter report title:";
+        this.inputDetails.placeholder="Enter report description";
+        this.inputButton.innerText="Submit";
+
+        this.appendChild(this.inputTitle);
+        this.appendChild(this.inputDetails);
+        this.appendChild(this.inputButton);
+        
+        this.id="inputpopupcontent"
     }
-})
-export {inputPop,inputButton,inputTitle,inputDetails};
+}customElements.define("input-pop",inputPop,{extends:"div"});

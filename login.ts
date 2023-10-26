@@ -7,24 +7,35 @@ import { User } from "./types";
 class Login extends HTMLDivElement{
     constructor(){
         super();
+        this.id="login";
+        let namediv= document.createElement("div");
+        this.appendChild(namediv);
+        
         let userName=document.createElement("label");
         userName.innerHTML="User Name:";
-        this.appendChild(userName);
+        namediv.appendChild(userName);
 
         let userNameInput = document.createElement("input");
+        userNameInput.id="usernameinput";
         userNameInput.placeholder="Enter Username";
-        this.appendChild(userNameInput);
+        namediv.appendChild(userNameInput);
 
+        let passwordDiv= document.createElement("div");
+        passwordDiv.id="passworddiv";
+        this.appendChild(passwordDiv);
         let password= document.createElement("label");
-        password.innerHTML = "Password";
-        this.appendChild(password);
+        password.innerHTML = "Password:";
+        passwordDiv.appendChild(password);
 
         let passwordInput = document.createElement("input");
+        passwordInput.placeholder="Enter Password";
+        passwordInput.id="passwordinput";
         passwordInput.type="password";
-        this.appendChild(passwordInput);
+        passwordDiv.appendChild(passwordInput);
 
         let loginButton = document.createElement("button");
         loginButton.innerHTML= "Login";
+        loginButton.id="loginButton";
         this.appendChild(loginButton);
         
         loginButton.addEventListener("click",()=>this.login({name:userNameInput.value,password :passwordInput.value}));

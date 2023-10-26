@@ -8,9 +8,10 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js"
 import Graphic from "@arcgis/core/Graphic.js";
 import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Popup from "@arcgis/core/widgets/Popup.js";
-import { inputPop, inputButton,inputDetails,inputTitle } from "./inputPopupContent";
 import Geometry from "@arcgis/core/geometry/Geometry";
 import CustomContent from "@arcgis/core/popup/content/CustomContent";
+import { sidebar } from "./sidebar";
+import { inputPop } from "./inputPopupContent";
 
 
 
@@ -31,7 +32,24 @@ export async function changePageUser(user :User){
             map: map,
             center: [30, 40], // Longitude, latitude
             zoom: 13, // Zoom level
-            container: "viewDiv" // Div element
+            container: "viewDiv", // Div element
+            popup: new Popup({
+                dockEnabled: true,
+                dockOptions: {
+                  // Disables the dock button from the popup
+                  buttonEnabled: false,
+                  // Ignore the default sizes that trigger responsive docking
+                  breakpoint: false
+                },
+                visibleElements: {
+                  closeButton: true
+                }
+            }),
+    });
+    view.popup.set("dockOptions", {
+        breakpoint: false,
+        buttonEnabled: false,
+        position:"top-left"
     });
       
     var graphicsLayer = new GraphicsLayer();  
@@ -42,6 +60,7 @@ export async function changePageUser(user :User){
     var temp = document.createElement("div");
     var button = document.createElement("button");
     button.innerHTML="Add report";
+    button.id="reportaddinbutton";
     temp.appendChild(button);
     view.ui.add(temp,"top-right");
 
@@ -55,23 +74,11 @@ export async function changePageUser(user :User){
 
     view.on("click",function(event){
         if(edit){
-            let xputPop= document.createElement("div");
-            let inputTitle= document.createElement("input");
-            let inputDetails = document.createElement("input");
-            let inputButton= document.createElement("button");
-
-            inputTitle.placeholder="Enter report title:";
-            inputDetails.placeholder="Enter report descriptiop";
-            inputButton.innerText="Submit";
-
-            xputPop.appendChild(inputTitle);
-            xputPop.appendChild(inputDetails);
-            xputPop.appendChild(inputButton);
-
-
-            let inputPop = new CustomContent({
+            
+            let inputPopupContent = new inputPop();
+            let customPop = new CustomContent({
                 creator: ( event) =>{
-                    return xputPop;
+                    return inputPopupContent;
                 }
             })
             const clickedPoint = view.toMap(event);
@@ -91,12 +98,12 @@ export async function changePageUser(user :User){
                     size:"30px"
                 },
                 popupTemplate:{
-                    content:[inputPop]
+                    content:[customPop]
                 }
             });
-            inputButton.addEventListener("click",async ()=>{
-                graphic.attributes={title:(inputTitle.value),
-                details:(inputDetails.value)};
+            inputPopupContent.inputButton.addEventListener("click",async ()=>{
+                graphic.attributes={title:(inputPopupContent.inputTitle.value),
+                details:(inputPopupContent.inputDetails.value)};
                 console.log(event.mapPoint.latitude,event.mapPoint.longitude);
                 graphic.popupTemplate={
                     title:"{title}",
@@ -110,11 +117,11 @@ export async function changePageUser(user :User){
                     x:clickedPoint.longitude, y:clickedPoint.latitude },user.token);
                 view.popup.visible=false;
             })
-            inputTitle.value = '';
-            inputDetails.value='';
+            
             graphicsLayer.add(graphic); 
             edit=false;
         }
     })
-    
+    let bar= new sidebar();
+    view.ui.add(bar , "bottom-left");
 }

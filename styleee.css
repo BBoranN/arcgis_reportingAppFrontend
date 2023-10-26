@@ -1,32 +1,117 @@
+
+#login{
+    border-radius: 5px;
+    width: 400px;
+    height: 100px;
+    margin: auto;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(178, 248, 248, 0.74);
+}
+#loginButton{
+    background-color: white;
+    border-radius: 3px;
+    border-color: white;
+    margin: 3px;
+}
+#usernameinput{
+    float: right;
+    width:300px;
+}
+#passwordinput{
+    float: right;
+    width:300px
+}
 #sidebar{
     background-color: white;
+    height: 330px;
+    width: 320px;
+    font-size: 16px;
+}
+#bartext{
+    margin-left: 15px;
+}
+#colorCode{
+    /* top:50%; */
+    font-size: 17px;
+    width: 250px;
+    margin-left: 15px;
+}
+#colorInfo{
+    display: flex;
 }
 
-.pending{
-    height: 25px;
-    width: 25px;
+.color{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    
+    align-self: center;
+    float: right;
+   
+}
+
+#pending{
     background-color: #be0a0a;
-    border-radius: 50%;
-    display: inline-block;
 }
-.irrelevant{
-    height: 25px;
-    width: 25px;
+#irrelevant{
     background-color: #1c26bb;
-    border-radius: 50%;
-    display: inline-block;
+    
 }
-.workingon{
-    height: 25px;
-    width: 25px;
+#workingon{
     background-color: #cdde15;
-    border-radius: 50%;
-    display: inline-block;
 }
-.solved{
-    height: 25px;
-    width: 25px;
+#solved{
     background-color: #11b81d;
-    border-radius: 50%;
-    display: inline-block;
 }
+
+#form{
+    font-size: 16px;
+    display: flex;
+}
+#changestatus{
+    font-size: 17px;
+}
+#statusB{
+    width: 200px;
+    height: 40px;
+    font-size: 16px;
+    background-color: rgba(85, 188, 231, 0.744);
+    border-color: rgba(30, 134, 179, 0.516);
+    border-style:inset ;
+    align-self: center;
+}
+#text{
+    font-size: 18px;
+}
+#reportaddinbutton{
+    background-color: rgba(125, 200, 232, 0.744);
+    width: 200px;
+    height: 50px;
+    font-size: 20px;
+}
+#inputpopupcontent{
+    display:flex;
+    flex-direction: column;
+    height: 200px;
+}
+
+#inputtitle{
+    height: 50px;
+    font-size: 16px;
+    
+}
+#inputdetails{
+    height: 50px;
+    font-size: 16px;
+}
+
+#inputbutton{
+    background-color: rgba(125, 200, 232, 0.744);
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    align-self: center;
+}
+

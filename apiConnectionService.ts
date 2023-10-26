@@ -63,7 +63,7 @@ class ApiConnectionService {
                         color:((data[i].status == "Pending") ? "red" : ((data[i].status =="Working On") ? "yellow" : (data[i].status =="Solved") ?  "green" :"blue")),
                         size:"30px"
                     },
-                    popupTemplate:(this.currentUserInfo.role =='admin') ? {content:[inputPop]} :{
+                    popupTemplate:{
                         title:"{title}",
                         content:[{
                             type: "text",
